@@ -1,0 +1,151 @@
+{% load static%}
+{% csrf_token %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .info {
+            text-align: left;
+        }
+
+        .info h1 {
+            color: #333;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .info p {
+            font-size: 1.2em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .info p span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .image-container img {
+            width: 200px; 
+            height: 200px; 
+            border-radius: 50%;
+            object-fit: cover; 
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+
+        .button-container button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .form-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .form-container form {
+            display: inline-block;
+            text-align: left;
+        }
+
+        .form-container form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        .form-container form input[type="file"],
+        .form-container form input[type="text"],
+        .form-container form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .form-container form button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container form button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="info">
+            <h1>{{ student.username }}</h1>
+            <div class="image-container">
+                <img src="{{ data.image.url }}" alt="upload Image">
+            </div>
+            <p><span>Name:</span> {{ student.name }}</p>
+            <p><span>Email:</span> {{ student.email }}</p>
+            <p><span>Contact number:</span> {{ student.phone_num }}</p>
+            <p><span>Subject:</span> {{ data.subject }}</p>
+
+        </div>
+    </div>
+    {% csrf_token %}
+    <div class="form-container">{% csrf_token %}
+
+        <form action="{% url 'edit' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="image">Add Image:</label>
+            <input type="file" name="image" id="image">
+            <label for="subject">Subject:</label>
+            <input type="text" name="subject" id="subject">
+            <button type="submit">Edit</button>
+        </form>
+    </div>
+    <div class="button-container">
+        <button><a href="/">Home</a></button>
+        <button><a href="/signout">Sign Out</a></button>
+    </div>
+</body>
+</html>

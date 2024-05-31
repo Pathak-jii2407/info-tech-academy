@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+ 
+</style>
+<body>
+    <nav
+      class="navbar navbar-expand-lg"
+      style="background-color: darkslategrey;"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/"><img src="{% static 'imgs/file.png' %}" alt="" height="50"></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarText"
+          aria-controls="navbarText"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <ul class="navbar-nav me-auto mb-4 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Skills</a>
+            </li>
+          </ul>
+          <span class="navbar-text"><b>Welcome To The NTI Tech Academy</b></span>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <h1>Sign Up</h1>
+        {% if messages %}
+                <ul class="messages">
+                  {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+                </ul>
+        {% endif %}
+        <form method="post" action="{% url 'signup' %}" onsubmit="return validatePassword()">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text" id="name" name="username" maxlength="40" required>
+
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" name="fname" maxlength="40">
+
+            <label for="lname">Last Name:</label>
+            <input type="text" id="mname" name="lname" maxlength="40">
+
+
+            <label for="phone_num">Phone Number:</label>
+            <input type="tel" id="phone_num" name="phone_num" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" maxlength="50" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" maxlength="50" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" maxlength="50" required>
+            
+            <button type="submit">Sign Up</button>
+            <div class="already_account">
+                <b>You Have Already Account ?</b>
+                <a href="/signin/">Sign In</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function validatePassword() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const passwordError = document.getElementById('passwordError');
+
+            if (!passwordError) {
+                const errorElement = document.createElement('div');
+                errorElement.id = 'passwordError';
+                document.querySelector('form').appendChild(errorElement);
+            }
+
+            const errorElement = document.getElementById('passwordError');
+            errorElement.style.color = 'red';
+            
+            const minLength = 8;
+            const hasUpperCase = /[A-Z]/.test(password);
+            const hasLowerCase = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            if (password.length < minLength) {
+                errorElement.textContent = 'Password must be at least 8 characters long.';
+                return false;
+            }
+
+            if (!hasUpperCase) {
+                errorElement.textContent = 'Password must contain at least one uppercase letter.';
+                return false;
+            }
+
+            if (!hasLowerCase) {
+                errorElement.textContent = 'Password must contain at least one lowercase letter.';
+                return false;
+            }
+
+            if (!hasNumber) {
+                errorElement.textContent = 'Password must contain at least one number.';
+                return false;
+            }
+
+            if (!hasSpecialChar) {
+                errorElement.textContent = 'Password must contain at least one special character.';
+                return false;
+            }
+
+            if (password !== confirmPassword) {
+                errorElement.textContent = 'Passwords do not match.';
+                return false;
+            }
+
+            errorElement.textContent = '';
+            return true;
+        }
+    </script>
+</body>
+</html>

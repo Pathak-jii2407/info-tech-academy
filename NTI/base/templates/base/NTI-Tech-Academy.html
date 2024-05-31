@@ -1,0 +1,341 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NTI Tech Academy</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="{%static 'css/style.css'%}" />
+    <script src="	https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="shortcut icon" href="{%static 'imgs/file.png'%}" type="image/x-icon">
+    <script src="/server.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+</head>
+<body>
+    <div id="navbar" >
+        <nav class="navbar navbar-expand-lg navbar-light " style="z-index:11;">
+            <div class="container-fluid" >
+              <a class="navbar-brand" href="/"><img src="{%static 'imgs/file.png'%}" alt="" height="60"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/"><b>Home</b></a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#container"><b>Teacher Account</b></a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <b>Login</b>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="/signup/">Create Account </a></li>
+                      <li><a class="dropdown-item" href="/signin/">Student Login</a></li>
+                      <li><a class="dropdown-item" href="/teacher/">Teacher login </a></li>
+  
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#about"><b>About</b></a>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+          </nav>
+    </div>
+    
+    <main style='background-image: url("{% static 'imgs/main.jpg' %}")'>
+      <div class="m1">
+          <span id="first">AMBITION IS THE FIRST STEP TOWARDS</span>
+          <span id="secound">SUCCESS</span>
+          <span id="third">Now Available for Online Coaching</span>
+          <button class="btn btn-outline-light btn-dark">BOOK NOW</button>
+
+      </div>
+      <div class="m2">
+          <div class="side-block">
+              <h2>Present Students Today</h2>
+              
+              <ul>
+      
+                  {% for student in present_student %}
+      
+                      {% if student %}
+                          <li>{{ student }}</li>
+                      {% else %}<p>No students are marked as present today.</p>
+                      {% endif %}
+                  {% endfor %}
+              
+              </ul>
+          </div>
+      </div>
+  </main>
+  <div id="about" style='background-image: url("{% static 'imgs/about.avif' %}")'>
+    <div class="a1">
+      <h1>ABOUT</h1>
+      <hr style="border: 2px solid black;">
+      <p>
+        Welcome to NTI Tech Academy – your gateway to excellence in Information Technology! At NTI, we are not just a training institution; we are a solution provider in Information Technology, offering a holistic approach to learning, staffing, and product services. With a dedicated focus on niche technologies and a team of seasoned trainers, we empower our students to stand out in the competitive market.
+
+At NTI Tech Academy, we understand that the IT landscape is constantly evolving, and to thrive in this dynamic industry, one must stay ahead of the curve. That’s why we are committed to providing our students with the knowledge, skills, and practical experience they need to excel.
+
+One of our unique strengths is our emphasis on real-world exposure. We believe that the best way to learn is by doing, and so we provide our students with the opportunity to work on real projects. This hands-on experience not only enhances their technical proficiency but also instills confidence to tackle real-world challenges.
+
+However, at NTI Tech Academy, we don’t just stop at technical training. We understand that success in the IT field requires a combination of technical expertise and personal development. That’s why we place a significant emphasis on overall growth and development. We nurture our students’ soft skills, communication abilities, and problem-solving acumen, ensuring they are well-rounded professionals ready to thrive in any work environment.
+
+In a rapidly changing industry, it’s imperative to have an edge, and that’s precisely what NTI Tech Academy provides. Our students are equipped with the knowledge, skills, and confidence to be at the forefront of the IT market.
+
+Join us at NTI Tech Academy, where we are dedicated to not just shaping careers but transforming lives. Explore our programs, meet our experienced trainers, and embark on a journey of learning and growth that will set you on the path to success in the ever-evolving world of Information Technology. Your future in IT begins here!
+      </p>
+    </div>
+   
+  </div>
+  <div class="base" style='background-image: url("{% static 'imgs/base.jpg' %}")'>
+    <section class="services">
+        <h1>How I Can Help You</h1>
+        <div class="service-card">
+            <div class="service-content">
+                <h2>Free Consultation</h2>
+                <p>Use this area to describe one of your services.</p>
+                <p class="service-duration">45 min</p>
+                <span>Book It</span>
+            </div>
+        </div>
+        <div class="service-card">
+            <div class="service-content">
+                <h2>Online Coaching</h2>
+                <p>Use this area to describe one of your services.</p>
+                <p class="service-duration">$70</p>
+                <span>Book It</span>
+            </div>
+        </div>
+        <div class="service-card">
+            <div class="service-content">
+                <h2>Self-Improvement Workshop</h2>
+                <p>Use this area to describe one of your services.</p>
+                <p class="service-duration"><br>1 hr<br>$90</p>
+                <span>Book It</span>
+            </div>
+        </div>
+    </section>
+  </div>
+  <div class="nti-info">
+    <div class="container-info">
+      <div class="block engage">
+          <div class="icon-1">&#x1F4A1;</div>
+          <h2>ENGAGE</h2>
+          <p>in workshops, simulations, and seminars led by industry leaders at NTI Tech Academy</p>
+      </div>
+      <div class="block network">
+          <div class="icon-1">&#x1F465;</div>
+          <h2>NETWORK</h2>
+          <p>with prominent alumni at the forefront of the tech, business, and public service sectors</p>
+      </div>
+      <div class="block grow">
+          <div class="icon-1">&#x1F393;</div>
+          <h2>GROW</h2>
+          <p>your communication and critical thinking skills in a rigorous tech setting</p>
+      </div>
+    </div>
+  </div>
+  
+
+ 
+
+  <div class="count-container">
+    <div class="count-box">
+        <span id="coursesCount">0</span>
+        <p>Courses & Videos</p>
+    </div>
+    <div class="count-box">
+        <span id="teachersCount">0</span>
+        <p>Expert Teachers</p>
+    </div>
+    <div class="count-box">
+        <span id="studentsCount">0</span>
+        <p>University Students</p>
+    </div>
+    <div class="count-box">
+        <span id="classesCount">0</span>
+        <p>Classes Complete</p>
+    </div>
+  </div>
+  <hr>
+  <hr>
+  <div id="container">
+    <h1>Meet Our Teachers</h1>
+    <div class="teachers">
+        <div class="teacher-card">
+            <img src="teacher1.jpg" alt="Stuart Kelvin">
+            <h2>Stuart Kelvin</h2>
+            <p>Associate Professor</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="teacher-card">
+            <img src="teacher2.jpg" alt="Eamily Cristian">
+            <h2>Eamily Cristian</h2>
+            <p>Associate Professor</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="teacher-card">
+            <img src="teacher3.jpg" alt="Kevin Williams">
+            <h2>Kevin Williams</h2>
+            <p>Associate Professor</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+            </div>
+        </div>
+        <div class="teacher-card">
+            <img src="teacher4.jpg" alt="Salina Gomaze">
+            <h2>Salina Gomaze</h2>
+            <p>Associate Professor</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-youtube"></i></a>
+                <a href="#"><i class="fa fa-instagram"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="testimonial-container" style='background-image: url("{% static 'imgs/Testimonial.jpg' %}")'>
+  <div class="testimonial-slider">
+      <div class="testimonial">
+          <p>“NTI Tech Academy has revolutionized my career. The hands-on training is unparalleled.”</p>
+          <h3>Ravi Mishra </h3>
+          <h4>Software Engineer</h4>
+      </div>
+      <div class="testimonial">
+          <p>“The curriculum is challenging but extremely rewarding. I highly recommend NTI Tech Academy.”</p>
+          <h3>Rajesh Dubey</h3>
+          <h4>Data Scientist</h4>
+      </div>
+      <div class="testimonial">
+          <p>“The instructors are knowledgeable and always ready to help. Best decision I've made!”</p>
+          <h3>Alka Digwani </h3>
+          <h4>Personality Coach</h4>
+      </div>
+  </div>
+  <button class="prev" onclick="prevTestimonial()">❮</button>
+  <button class="next" onclick="nextTestimonial()">❯</button>
+</div>
+
+
+<div id="certificate">
+  <img src="{% static 'imgs\NTIcertificate.png'%}" alt="Your certificate">
+  <h2>Unlock your cartificate</h2>
+  <p>Complete the course and Acieve your Goal.</p>
+</div>
+
+<div>
+
+</div>
+
+  <footer>
+    <div class="footer-container">
+        <div class="footer-contact">
+            <h2>Contact</h2>
+            <p>LIG - 2/21/422, <br> Nehru Ngar, Rewa MP - 486001</p>
+            <p>Tel:07662-462289<br> Fax: 9174253016</p>
+            <p>Email: <a href="mailto:info@ntitechacademy.com">info@ntitechacademy.com</a></p>
+            <div class="footer-social">
+                <a href="https://www.facebook.com/share/zwxc1iJjgGYsM2VB/?mibextid=qi2Omg"><i class="fa fa-facebook-f"></i></a>
+                <a href="#"><i class="fa fa-twitter"></i></a>
+                <a href="https://www.instagram.com/ntitechacademy?igsh=ZzB5dXo0cG5yNTZv"><i class="fa fa-instagram"></i></a>
+                <a href="https://youtube.com/@ntitechacademy1?si=LtKTo8cI4-X--oVb"><i class="fa fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-map">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1814.6132038753603!2d81.31655751041902!3d24.546836996938715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39845a3d5346e9e5%3A0x3fddee36199d7bb0!2sNTI%20Tech%20Academy!5e0!3m2!1sen!2sin!4v1717009535328!5m2!1sen!2sin" width="400" height="350" style="border:0; border-radius:10px" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 by Personal Life Coach. Powered and secured by <b>NTI Tech Acedamy</b></p>
+    </div>
+</footer>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+  let currentTestimonialIndex = 0;
+
+function showTestimonial(index) {
+const testimonials = document.querySelectorAll('.testimonial');
+const slider = document.querySelector('.testimonial-slider');
+
+if (index >= testimonials.length) {
+  currentTestimonialIndex = 0;
+} else if (index < 0) {
+  currentTestimonialIndex = testimonials.length - 1;
+} else {
+  currentTestimonialIndex = index;
+}
+
+const offset = -currentTestimonialIndex * 100;
+slider.style.transform = `translateX(${offset}%)`;
+}
+
+function nextTestimonial() {
+showTestimonial(currentTestimonialIndex + 1);
+}
+
+function prevTestimonial() {
+showTestimonial(currentTestimonialIndex - 1);
+}
+
+// Initialize
+showTestimonial(currentTestimonialIndex);
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            animateCount('coursesCount', data.courses);
+            animateCount('teachersCount', data.teachers);
+            animateCount('studentsCount', data.students);
+            animateCount('classesCount', data.classes);
+        });
+});
+
+function animateCount(id, endValue) {
+    let startValue = 0;
+    const duration = 2000;
+    const increment = endValue / (duration / 10);
+    const obj = document.getElementById(id);
+    
+    const updateCounter = () => {
+        startValue += increment;
+        if (startValue < endValue) {
+            obj.innerText = Math.ceil(startValue);
+            setTimeout(updateCounter, 10);
+        } else {
+            obj.innerText = endValue;
+        }
+    };
+    
+    updateCounter();
+}
+
+</script>
+    
+</body>
+</html>
+

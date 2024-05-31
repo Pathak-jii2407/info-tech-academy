@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Account</title>
+</head>
+<body>
+    <h1>Search Account</h1>
+    <form method="get" action="{% url 'search-account' %}">
+        <input type="text" name="query" value="{{ query }}" placeholder="Search...">
+        <button type="submit">Search</button>
+    </form> 
+
+    <h2>Students</h2>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.name }}</li>
+        {% empty %}
+            <li>No students found.</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Teachers</h2>
+    <ul>
+        {% for teacher in teachers %}
+            <li>{{ teacher.name }}</li>
+        {% empty %}
+            <li>No teachers found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

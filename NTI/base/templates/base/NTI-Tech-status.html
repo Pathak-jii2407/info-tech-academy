@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Status</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input[type="checkbox"] {
+            margin: 0;
+            vertical-align: middle;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="text" id="searchInput" placeholder="Search for students..." onkeyup="searchStudents()">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody id="studentTableBody">
+                {% for student in students %}
+                    <tr>
+                        <td style='text-transform:capitalize;'>{{ student.name }} </td>
+                        <td>{{ student.phone_num }}</td>
+                        <td>
+                            <input type="checkbox" id="attendance_{{ student.id }}" name="attendance[]" value="{{ student.id }}">
+                            <label for="attendance_{{ student.id }}">Present</label>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <button type="submit">Submit Attendance</button>
+    </form>
+
+    <script>
+        function searchStudents() {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("studentTableBody");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
