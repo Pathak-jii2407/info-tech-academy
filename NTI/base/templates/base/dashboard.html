@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Students Dashboard</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f0f0;
+      }
+      
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
+      
+      .filters {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      
+      .filters label {
+        flex: 1;
+      }
+      
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+        color: #333;
+      }
+      
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+      
+      #graphContainer {
+        width: 80%;
+        margin: 20px auto;
+      }
+
+  </style>
+</head>
+<body>
+  <h2>Students Dashboard</h2>
+  <div class="filters">
+    <label for="name_filter">Filter by Name:</label>
+    <input type="text" id="name_filter" name="name_filter" placeholder="Enter Name">
+    <label for="date_filter">Filter by Date:</label>
+    <input type="text" id="date_filter" name="date_filter" placeholder="DD-MM-YYYY">
+    <button onclick="applyFilters()">Apply Filters</button>
+  </div>
+
+  <table id="studentTable">
+    <thead>
+        <tr>
+          <th>Name</th>
+          <th>Phone Number</th>
+          <th>Attendance</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody">
+        {% for student in present %}
+        <tr>
+          <td>{{ student.name }}</td>
+          <td>{{ student.phone_num }}</td>
+          <td>{{ student.status }}</td>
+          <td>{{ student.status_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+
+  <script>
+    function applyFilters() {
+        var nameFilter = document.getElementById('name_filter').value.toLowerCase();
+        var dateFilter = document.getElementById('date_filter').value;
+      
+        var rows = document.getElementById('studentTableBody').getElementsByTagName('tr');
+      
+        for (var i = 0; i < rows.length; i++) {
+          var row = rows[i];
+          var name = row.cells[0].textContent.toLowerCase();
+          var date = row.cells[3].textContent;
+      
+          var nameMatch = name.includes(nameFilter);
+          var dateMatch = date.includes(dateFilter) || dateFilter === ''; 
+      
+          row.style.display = nameMatch && dateMatch ? '' : 'none';
+        }
+      }
+
+    // Sort function to arrange names alphabetically
+    function sortTable() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("studentTable");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[0];
+                y = rows[i + 1].getElementsByTagName("TD")[0];
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+    window.onload = sortTable;
+  </script>
+</body>
+</html>
