@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 
 class StudentStatus(models.Model):
     id = models.AutoField(primary_key=True, serialize=False)
@@ -31,7 +30,7 @@ class TeacherAccount(models.Model):
     name = models.CharField(max_length=40)
     password = models.CharField(max_length=100,unique=True)
     phone_num = models.BigIntegerField()
-    subject = models.CharField(max_length=40)
+    subject = models.CharField(max_length=100)
     description = models.TextField(max_length=552, null=True)
     image = models.ImageField(upload_to='images/')  
 
@@ -39,8 +38,6 @@ class TeacherAccount(models.Model):
     def __str__(self):
         return self.name
 
-class Excel(models.Model):
-    pass
 
 
 
@@ -51,3 +48,9 @@ class Edit(models.Model):
 
     def __str__(self):
         return self.student_info.name
+    
+    
+    
+    
+    
+    
