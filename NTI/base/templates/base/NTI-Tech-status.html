@@ -36,7 +36,7 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
+                    <th onclick="sortTable()">Name</th>
                     <th>Phone Number</th>
                     <th>Attendance</th>
                 </tr>
@@ -44,7 +44,7 @@
             <tbody id="studentTableBody">
                 {% for student in students %}
                     <tr>
-                        <td style='text-transform:capitalize;'>{{ student.name }} </td>
+                        <td style='text-transform:capitalize;'>{{ student.name }}</td>
                         <td>{{ student.phone_num }}</td>
                         <td>
                             <input type="checkbox" id="attendance_{{ student.id }}" name="attendance[]" value="{{ student.id }}">
@@ -58,6 +58,31 @@
     </form>
 
     <script>
+        function sortTable() {
+            var table, rows, switching, i, x, y, shouldSwitch;
+            table = document.getElementById("studentTableBody");
+            switching = true;
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+                for (i = 0; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName("TD")[0];
+                    y = rows[i + 1].getElementsByTagName("TD")[0];
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                }
+            }
+        }
+
+        window.onload = sortTable;
+
         function searchStudents() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("searchInput");
