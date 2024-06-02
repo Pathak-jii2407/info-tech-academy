@@ -10,44 +10,110 @@
     <link rel="shortcut icon" href="{%static 'imgs/file.png'%}" type="image/x-icon">
     <script src="/server.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+      #navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        transition: top 0.3s;
+        z-index: 11;
+    }
+      #container {
+        width: 90%;
+        margin: 0 auto;
+        overflow: hidden;
+        position: relative;
+    }
     
+      .slider {
+          width: 100%;
+          overflow: hidden;
+      }
+      
+      .slider-wrapper {
+          display: flex;
+          transition: transform 0.5s ease-in-out;
+      }
+      
+      .teacher-card {
+          min-width: 400px;
+          height: 400px;
+          margin-right: 10px;
+          overflow: hidden;
+          box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 20px;
+          background-color: white;
+          text-align: center;
+      }
+      
+      button.prev, button.next {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background-color: rgba(0, 0, 0, 0.194);
+          color: white;
+          border: none;
+          padding: 10px;
+          cursor: pointer;
+      }
+      
+      button.prev {
+          left: 0;
+      }
+      
+      button.next {
+          right: 0;
+      }
+      button.prev:hover, button.next:hover {
+
+          background-color: rgba(0, 0, 0, 0.651);
+
+      }
+    
+    </style>
 </head>
 <body>
-    <div id="navbar" >
-        <nav class="navbar navbar-expand-lg navbar-light " style="z-index:11;">
-            <div class="container-fluid" >
-              <a class="navbar-brand" href="/"><img src="{%static 'imgs/file.png'%}" alt="" height="60"></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <div id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><img src="{% static 'imgs/file.png' %}" alt="" height="60"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/"><b>Home</b></a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#container"><b>Teacher Account</b></a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <b>Login</b>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="/signup/">Create Account </a></li>
-                      <li><a class="dropdown-item" href="/signin/">Student Login</a></li>
-                      <li><a class="dropdown-item" href="/teacher/">Teacher login </a></li>
-  
-                    </ul>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#about"><b>About</b></a>
-                  </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/"><b>Home</b></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#container"><b>Teacher Account</b></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <b>Login</b>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/signup/">Create Account</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a class="dropdown-item" href="{% url 'signout' %}">Sign Out</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="{% url 'signin' %}">Student Login</a></li>
+                                <li><a class="dropdown-item" href="{% url 'teacher' %}">Teacher login</a></li>
+                            {% endif %}
+                            {% if user.is_staff %}
+                                <li><a class="dropdown-item" href="{% url 'status' %}">Attendance</a></li>
+                                <li><a class="dropdown-item" href="dashboard">Dashboard</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#about"><b>About</b></a>
+                    </li>
                 </ul>
-              </div>
-
             </div>
-          </nav>
-    </div>
+        </div>
+    </nav>
+</div>
     
     <main style='background-image: url("{% static 'imgs/main.jpg' %}")'>
       <div class="m1">
@@ -58,21 +124,26 @@
 
       </div>
       <div class="m2">
-          <div class="side-block">
-              <h2>Present Students Today</h2>
-              
-              <ul>
-      
-                  {% for student in present_student %}
-      
-                      {% if student %}
-                          <li>{{ student }}</li>
-                      {% else %}<p>No students are marked as present today.</p>
-                      {% endif %}
-                  {% endfor %}
-              
-              </ul>
-          </div>
+        <div class="m1" >
+          {% if  user.is_authenticated %}
+          <a href="student-account">
+            <span class="btn btn-outline-light btn-list-group-item-secondary accordion-flush">{{ data.name }}</span>
+          </a>
+          {% else %}<a class="btn btn-outline-light btn-list-group-item-secondary accordion-flush" href="{% url 'signin' %}">Student Login</a>
+          {%endif%}
+        </div>
+        <div class="side-block">
+            <h2>Present Students Today</h2>
+            <ul>
+                {% for student in present_student %}
+                    {% if student %}
+                        <li>{{ student }}</li>
+                    {% else %}<p>No students are marked as present today.</p>
+                    {% endif %}
+                {% endfor %}
+            
+            </ul>
+        </div>
       </div>
   </main>
   <div id="about" style='background-image: url("{% static 'imgs/about.avif' %}")'>
@@ -149,19 +220,19 @@ Join us at NTI Tech Academy, where we are dedicated to not just shaping careers 
 
   <div class="count-container">
     <div class="count-box">
-        <span id="coursesCount">0</span>
+        <span id="coursesCount">100+</span>
         <p>Courses & Videos</p>
     </div>
     <div class="count-box">
-        <span id="teachersCount">0</span>
+        <span id="teachersCount">50+</span>
         <p>Expert Teachers</p>
     </div>
     <div class="count-box">
-        <span id="studentsCount">0</span>
+        <span id="studentsCount">500+</span>
         <p>University Students</p>
     </div>
     <div class="count-box">
-        <span id="classesCount">0</span>
+        <span id="classesCount">20+</span>
         <p>Classes Complete</p>
     </div>
   </div>
@@ -169,54 +240,25 @@ Join us at NTI Tech Academy, where we are dedicated to not just shaping careers 
   <hr>
   <div id="container">
     <h1>Meet Our Teachers</h1>
-    <div class="teachers">
-        <div class="teacher-card">
-            <img src="teacher1.jpg" alt="Stuart Kelvin">
-            <h2>Stuart Kelvin</h2>
-            <p>Associate Professor</p>
-            <div class="social-icons">
-                <a href="#"><i class="fa fa-facebook-f"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
+    <div class="slider">
+        <div class="slider-wrapper">
+            {% for teacher in teachers %}
+            <div class="teacher-card">
+                <img src="{{teacher.image.url}}" alt="{{teacher.name}}">
+                <h2>{{teacher.name}}</h2>
+                <h6>{{teacher.subject}}</h6>
+                <p>{{teacher.description}}</p>
+                <div class="social-icons">
+                </div>
             </div>
-        </div>
-        <div class="teacher-card">
-            <img src="teacher2.jpg" alt="Eamily Cristian">
-            <h2>Eamily Cristian</h2>
-            <p>Associate Professor</p>
-            <div class="social-icons">
-                <a href="#"><i class="fa fa-facebook-f"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-            </div>
-        </div>
-        <div class="teacher-card">
-            <img src="teacher3.jpg" alt="Kevin Williams">
-            <h2>Kevin Williams</h2>
-            <p>Associate Professor</p>
-            <div class="social-icons">
-                <a href="#"><i class="fa fa-facebook-f"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-            </div>
-        </div>
-        <div class="teacher-card">
-            <img src="teacher4.jpg" alt="Salina Gomaze">
-            <h2>Salina Gomaze</h2>
-            <p>Associate Professor</p>
-            <div class="social-icons">
-                <a href="#"><i class="fa fa-facebook-f"></i></a>
-                <a href="#"><i class="fa fa-youtube"></i></a>
-                <a href="#"><i class="fa fa-instagram"></i></a>
-                <a href="#"><i class="fa fa-twitter"></i></a>
-            </div>
+            {% endfor %}
         </div>
     </div>
+    <button class="prev"><h3><</h1></button>
+    <button class="next"><h3>></h3></button>
 </div>
-<div class="testimonial-container" style='background-image: url("{% static 'imgs/Testimonial.jpg' %}")'>
+
+  <div class="testimonial-container" style='background-image: url("{% static 'imgs/Testimonial.jpg' %}")'>
   <div class="testimonial-slider">
       <div class="testimonial">
           <p>“NTI Tech Academy has revolutionized my career. The hands-on training is unparalleled.”</p>
@@ -241,7 +283,7 @@ Join us at NTI Tech Academy, where we are dedicated to not just shaping careers 
 
 <div id="certificate">
   <img src="{% static 'imgs\NTIcertificate.png'%}" alt="Your certificate">
-  <h2>Unlock your cartificate</h2>
+  <h2>Unlock your cartificate</h2> &circledcirc;presented by -NTI
   <p>Complete the course and Acieve your Goal.</p>
 </div>
 
@@ -274,6 +316,23 @@ Join us at NTI Tech Academy, where we are dedicated to not just shaping careers 
 </footer>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    let lastScrollTop = 0;
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', function () {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > lastScrollTop) {
+            navbar.style.top = '-70px';
+        } else {
+            navbar.style.top = '0';
+        }
+        lastScrollTop = scrollTop;
+    });
+});
+
+
+
   let currentTestimonialIndex = 0;
 
 function showTestimonial(index) {
@@ -333,6 +392,71 @@ function animateCount(id, endValue) {
     
     updateCounter();
 }
+document.addEventListener('DOMContentLoaded', function () {
+  const sliderWrapper = document.querySelector('.slider-wrapper');
+  const teacherCards = document.querySelectorAll('.teacher-card');
+  const prevButton = document.querySelector('.prev');
+  const nextButton = document.querySelector('.next');
+
+  let currentIndex = 0;
+  const totalCards = teacherCards.length;
+  const cardWidth = 500 + 10; 
+  const intervalTime = 6000; 
+
+  teacherCards.forEach(card => {
+      const clone = card.cloneNode(true);
+      sliderWrapper.appendChild(clone);
+  });
+
+  function updateSliderPosition() {
+      sliderWrapper.style.transition = 'transform 0.5s ease-in-out';
+      sliderWrapper.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+  }
+
+  function goToNextCard() {
+      if (currentIndex >= totalCards) {
+          currentIndex = 0;
+          sliderWrapper.style.transition = 'none';
+          sliderWrapper.style.transform = `translateX(0px)`;
+          setTimeout(() => {
+              currentIndex++;
+              updateSliderPosition();
+          }, 0);
+      } else {
+          currentIndex++;
+          updateSliderPosition();
+      }
+  }
+
+  function goToPrevCard() {
+      if (currentIndex <= 0) {
+          currentIndex = totalCards - 1;
+          sliderWrapper.style.transition = 'none';
+          sliderWrapper.style.transform = `translateX(${-currentIndex * cardWidth}px)`;
+          setTimeout(() => {
+              updateSliderPosition();
+          }, 0);
+      } else {
+          currentIndex--;
+          updateSliderPosition();
+      }
+  }
+
+  prevButton.addEventListener('click', function () {
+      clearInterval(autoScrollInterval); 
+      goToPrevCard();
+      autoScrollInterval = setInterval(goToNextCard, intervalTime);
+  });
+
+  nextButton.addEventListener('click', function () {
+      clearInterval(autoScrollInterval); 
+      goToNextCard();
+      autoScrollInterval = setInterval(goToNextCard, intervalTime); 
+  });
+
+  let autoScrollInterval = setInterval(goToNextCard, intervalTime);
+});
+
 
 </script>
     
