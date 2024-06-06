@@ -59,6 +59,8 @@ def teacher_login(request):
     return render(request, 'base/teacher-signin.html')
 
 
+
+
 @staff_member_required
 def status(request):
     if request.method == 'POST':
@@ -68,10 +70,7 @@ def status(request):
         all_students = StudentInfo.objects.all()
 
         for student in all_students:
-            if str(student.id) in present_students:
-                status = 'Present'
-
-            
+            status = 'Present' if str(student.id) in present_students else 'Absent'
             student_status, created = StudentStatus.objects.get_or_create(
                 name=student.name,
                 phone_num=student.phone_num,
@@ -86,7 +85,6 @@ def status(request):
 
     students = StudentInfo.objects.all()
     return render(request, 'base/NTI-Tech-status.html', {'students': students, 'user': request.user})
-
 
 
 def signup(request):
@@ -180,9 +178,6 @@ def teacher_account(request):
     return render(request, 'base/NTI-Tech-Academy-teacher-Account.html', {'teachers': teachers})
 
 
-
 def dashboard(request):
     present_data = StudentStatus.objects.all()
     return render(request, 'base/dashboard.html', {'present': present_data})
-
-    
