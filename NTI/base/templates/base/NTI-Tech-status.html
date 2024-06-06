@@ -55,7 +55,9 @@
             </tbody>
         </table>
         <button type="submit">Submit Attendance</button>
+        <button type="button" onclick="filterPresentStudents()">Show Only Present Students</button>
     </form>
+    
 
     <script>
         function sortTable() {
@@ -101,6 +103,22 @@
                 }
             }
         }
+
+        function filterPresentStudents() {
+            var table, tr, td, i, checkbox;
+            table = document.getElementById("studentTableBody");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                checkbox = tr[i].getElementsByTagName("input")[0];
+                if (checkbox && !checkbox.checked) {
+                    tr[i].style.display = "none";
+                } else {
+                    tr[i].style.display = "";
+                }
+            }
+        }
+        
+    </script>
     </script>
 </body>
 </html>
