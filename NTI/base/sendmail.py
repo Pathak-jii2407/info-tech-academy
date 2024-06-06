@@ -24,7 +24,7 @@ from django.conf import settings
 
 def send(user_email, first_name):
     subject = 'Welcome to Our Site'
-    message = f'Hi {first_name},\n\nThank you for signing up. Please click the following link to sign in:\n http://127.0.0.1:8000/student-account'
+    message = f'Hi {first_name},\n\nThank you for signing up. Please click the following link to sign in:\n http://info-tech-academy.onrender.com/student-account'
     email_from = settings.DEFAULT_FROM_EMAIL
     recipient_list = [user_email]
     
