@@ -44,6 +44,7 @@
       th {
         background-color: #f2f2f2;
         color: #333;
+        cursor: pointer;
       }
       
       tr:hover {
@@ -70,10 +71,10 @@
   <table id="studentTable">
     <thead>
         <tr>
-          <th>Name</th>
+          <th onclick="sortTableByName()">Name</th>
           <th>Phone Number</th>
           <th>Attendance</th>
-          <th>Date</th>
+          <th onclick="sortTableByDate()">Date</th>
         </tr>
       </thead>
       <tbody id="studentTableBody">
@@ -107,8 +108,7 @@
         }
       }
 
-    // Sort function to arrange names alphabetically
-    function sortTable() {
+    function sortTableByName() {
         var table, rows, switching, i, x, y, shouldSwitch;
         table = document.getElementById("studentTable");
         switching = true;
@@ -131,7 +131,33 @@
         }
     }
 
-    window.onload = sortTable;
+    function sortTableByDate() {
+        var table, rows, switching, i, x, y, shouldSwitch;
+        table = document.getElementById("studentTable");
+        switching = true;
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[3];
+                y = rows[i + 1].getElementsByTagName("TD")[3];
+                if (new Date(x.innerHTML.split('-').reverse().join('-')) > new Date(y.innerHTML.split('-').reverse().join('-'))) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+            }
+        }
+    }
+
+    window.onload = function() {
+        sortTableByName();
+        sortTableByDate();
+    };
   </script>
 </body>
 </html>
