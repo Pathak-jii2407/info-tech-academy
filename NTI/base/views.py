@@ -125,7 +125,7 @@ def signup(request):
 
             send(user_email=email, first_name=firstname)
             user = authenticate(username=username, password=password)
-            return redirect('signin')
+            return redirect('index')
         except Exception as e:
             messages.error(request, f"Error: {e}")
             return redirect('signup')
@@ -140,8 +140,7 @@ def signin(request):
         if user is not None:
             login(request, user)
             return student_account(request)
-        
-        
+                
         else:
             messages.error(request, 'Invalid username or password')
     return render(request, 'base/signin.html')
