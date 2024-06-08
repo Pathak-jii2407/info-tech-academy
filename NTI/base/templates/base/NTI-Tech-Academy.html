@@ -69,7 +69,64 @@
           background-color: rgba(0, 0, 0, 0.651);
 
       }
-    
+      /* Chat bot styles */
+      #chatbot {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          width: 300px;
+          max-height: 400px;
+          border: 2px solid #ddd;
+          border-radius: 10px;
+          background-color: white;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          display: none;
+          flex-direction: column;
+      }
+      #chatbot-header {
+          background-color: #007bff;
+          color: white;
+          padding: 10px;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+      #chatbot-header h5 {
+          margin: 0;
+      }
+      #chatbot-body {
+          flex: 1;
+          padding: 10px;
+          overflow-y: auto;
+      }
+      #chatbot-input {
+          display: flex;
+          border-top: 1px solid #ddd;
+      }
+      #chatbot-input input {
+          flex: 1;
+          padding: 10px;
+          border: none;
+          border-bottom-left-radius: 10px;
+      }
+      #chatbot-input button {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          border-bottom-right-radius: 10px;
+      }
+      .chat-message {
+          margin-bottom: 10px;
+      }
+      .chat-message.bot {
+          text-align: left;
+      }
+      .chat-message.user {
+          text-align: right;
+      }
     </style>
 </head>
 <body>
@@ -114,6 +171,7 @@
         </div>
     </nav>
 </div>
+
     
     <main style='background-image: url("{% static 'imgs/main.jpg' %}")'>
       <div class="m1">
@@ -288,7 +346,23 @@ Join us at NTI Tech Academy, where we are dedicated to not just shaping careers 
 </div>
 
 <div>
+    <div id="chatbot" style='z-index: 7;'>
+        <div id="chatbot-header">
+            <h5>Chat Bot</h5>
+            <button onclick="toggleChatbot()">x</button>
+        </div>
+        <div id="chatbot-body"></div>
+        <div id="chatbot-input">
+            <input type="text" id="chatbot-input-text" placeholder="Type a message..." >
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <button style="position: fixed; bottom: 20px; right: 20px; z-index: 1; background: none; border: none;" onclick="toggleChatbot()">
+        {% comment %} <h1>🤖</h1> {% endcomment %}
+        <img src="{% static 'imgs\bot-ezgif.com-gif-maker.gif'%}" alt="Your certificate" height='200' weidth='200'>
 
+    </button>
+    
 </div>
 
   <footer>
@@ -361,9 +435,8 @@ showTestimonial(currentTestimonialIndex - 1);
 
 // Initialize
 showTestimonial(currentTestimonialIndex);
-</script>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
+
+document.addEventListener("DOMContentLoaded", function() {
     fetch('/api/stats')
         .then(response => response.json())
         .then(data => {
@@ -456,6 +529,72 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let autoScrollInterval = setInterval(goToNextCard, intervalTime);
 });
+
+let currentIndex = 0;
+
+    function slideLeft() {
+        const sliderWrapper = document.querySelector('.slider-wrapper');
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : sliderWrapper.children.length - 1;
+        sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function slideRight() {
+        const sliderWrapper = document.querySelector('.slider-wrapper');
+        currentIndex = (currentIndex < sliderWrapper.children.length - 1) ? currentIndex + 1 : 0;
+        sliderWrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function toggleChatbot() {
+        const chatbot = document.getElementById('chatbot');
+        chatbot.style.display = (chatbot.style.display === 'none' || chatbot.style.display === '') ? 'flex' : 'none';
+    }
+
+    function sendMessage() {
+        const inputField = document.getElementById('chatbot-input-text');
+        const message = inputField.value;
+        if (message.trim() === '') return;
+
+        displayMessage('user', message);
+        inputField.value = '';
+
+        setTimeout(() => {
+            displayMessage('bot', getBotResponse(message));
+        }, 1000);
+    }
+
+    function displayMessage(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message', sender);
+        messageElement.innerHTML = `<span>${message}</span>`;
+        document.getElementById('chatbot-body').appendChild(messageElement);
+        messageElement.scrollIntoView();
+    }
+
+    function getBotResponse(message) {
+        const lowerCaseMessage = message.toLowerCase();
+    
+        if (lowerCaseMessage.includes('hello')) {
+            return 'Hello {% if user.is_authenticated %}{{ data.name }}!{% endif %} How can I assist you today? 😊';
+        } if (lowerCaseMessage.includes('thank')) {
+            return 'Alright 😊';
+        } else if (lowerCaseMessage.includes('course')) {
+            return 'We offer various courses in IT. Which one are you interested in? 📚';
+        } else if (lowerCaseMessage.includes('price')) {
+            return 'The prices vary depending on the course. Could you specify which course you are interested in? 💲';
+        } else if (lowerCaseMessage.includes('contact')) {
+            return 'You can contact us at info@ntitechacademy.com or call us at 07662-462289. 📞';
+        } else if (lowerCaseMessage.includes('enroll')) {
+            return 'You can enroll in our courses through the "Book Now" button on our homepage or by visiting the student login section. 🎓';
+        } else if (lowerCaseMessage.includes('locat')) {
+            return 'We are located at LIG - 2/21/422, Nehru Ngar, Rewa MP - 486001. 🏢';
+        } else if (lowerCaseMessage.includes('schedule')) {
+            return 'Our classes are scheduled throughout the week. Please check the course details for the specific schedule. 📅';
+        } else {
+            const options = 'You can ask me about courses, prices, contact details, enrollment, location, or class schedules. 😊';
+            return `I'm sorry, I didn't understand that. Could you please rephrase? 🤔 ${options}`;
+        }
+    }
+    
 
 
 </script>
