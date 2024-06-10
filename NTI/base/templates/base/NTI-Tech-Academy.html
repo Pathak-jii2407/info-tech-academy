@@ -130,55 +130,56 @@
     </style>
 </head>
 <body>
-  <div id="navbar">
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/"><img src="{% static 'imgs/file.png' %}" alt="" height="60"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/"><b>Home</b></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#container"><b>Teacher Account</b></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <b>Login</b>
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/signup/">Create Account</a></li>
-                            {% if user.is_authenticated %}
-                                <li><a class="dropdown-item" href="{% url 'signout' %}">Sign Out</a></li>
-                            {% else %}
-                                <li><a class="dropdown-item" href="{% url 'signin' %}">Student Login</a></li>
-                                <li><a class="dropdown-item" href="{% url 'teacher' %}">Teacher login</a></li>
-                            {% endif %}
-                            {% if user.is_staff %}
-                                <li><a class="dropdown-item" href="{% url 'status' %}">Attendance</a></li>
-                                <li><a class="dropdown-item" href="dashboard">Dashboard</a></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#about"><b>About</b></a>
-                    </li>
-                </ul>
+    <div id="navbar">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/"><img src="{% static 'imgs/file.png' %}" alt="" height="60"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/"><b>Home</b></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#container"><b>Teacher Account</b></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <b>Login</b>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="/signup/">Create Account</a></li>
+                                {% if user.is_authenticated %}
+                                    <li><a class="dropdown-item" href="{% url 'signout' %}">Sign Out</a></li>
+                                {% else %}
+                                    <li><a class="dropdown-item" href="{% url 'signin' %}">Student Login</a></li>
+                                    <li><a class="dropdown-item" href="{% url 'teacher' %}">Teacher login</a></li>
+                                {% endif %}
+                                {% if user.is_staff %}
+                                    <li><a class="dropdown-item" href="{% url 'status' %}">Attendance</a></li>
+                                    <li><a class="dropdown-item" href="dashboard">Dashboard</a></li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#about"><b>About</b></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </nav>
-</div>
+        </nav>
+    </div>
 
-    
     <main style='background-image: url("{% static 'imgs/main.jpg' %}")'>
       <div class="m1">
           <span id="first">AMBITION IS THE FIRST STEP TOWARDS</span>
           <span id="secound">SUCCESS</span>
           <span id="third">Now Available for Online Coaching</span>
-          <button class="btn btn-outline-light btn-dark">BOOK NOW</button>
+          <form action='signup/'>
+            <button class="btn btn-outline-light btn-dark">BOOK NOW</button>
+          </form>
 
       </div>
       <div class="m2">
